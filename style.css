@@ -1,0 +1,24 @@
+.col {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    margin: 10px;
+    border-style: solid;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 79px;
+}
+
+.row {
+    display: inline-block;
+}
+
+.board {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 79px;
+}

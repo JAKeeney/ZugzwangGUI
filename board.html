@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="js/jquery-3.2.1.js"></script>
+    <meta charset="utf-8">
+    <title>Zugzwang</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="board"></div>
+    <div class="board">A</div>
+    <div class="board">B</div>
+    <div class="board">C</div>
+    <br><br><br><br><br><br><br>
+    <div>
+        <div class="board">A</div>
+        <div class="row">
+            <button type="button" id="AA" class="col" value="">&nbsp;</button>
+            <button type="button" id="AB" class="col" value="">&nbsp;</button>
+            <button type="button" id="AC" class="col" value="">&nbsp;</button>
+        </div>
+        <br>
+        <div class="board">B</div>
+        <div class="row">
+            <button type="button" id="BA" class="col" value="">&nbsp;</button>
+            <button type="button" id="BB" class="col" value="">&nbsp;</button>
+            <button type="button" id="BC" class="col" value="">&nbsp;</button>
+        </div>
+        <br>
+        <div class="board">C</div>
+        <div class="row">
+            <button type="button" id="CA" class="col" value="">&nbsp;</button>
+            <button type="button" id="CB" class="col" value="">&nbsp;</button>
+            <button type="button" id="CC" class="col" value="">&nbsp;</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    var turn = 0;
+
+    $(document).ready(function() {
+        $('button').click(function() {
+            var button = $(this);
+
+            if (button.val().trim().length == 0) {
+                if (turn < 6) {
+                    turn++;
+                    $.ajax({
+                        type: 'POST',
+                        url: 'placepiece.php',
+                        dataType: 'json',
+                        data: ({
+                            turn: turn
+                        }),
+                        success: function(result) {
+                            button.html(result);
+                            button.val(turn);
+                        },
+                        error: function() {
+                            console.log('errored out :(')
+                        }
+                    });
+                } else {
+                    turn++;
+                    $.ajax({
+                        type: 'POST',
+                        url: 'placepiece.php',
+                        dataType: 'json',
+                        data: ({
+                            turn: turn
+                        }),
+                        success: function(result) {
+                            button.html(result);
+                            console.log(turn - 6);
+                            $('button[value=' + (turn - 6) + ']').html('&nbsp;');
+                            $('button[value=' + (turn - 6) + ']').removeAttr('value');
+                            button.val(turn);
+                        },
+                        error: function() {
+                            console.log('errored out :(')
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+</html>
