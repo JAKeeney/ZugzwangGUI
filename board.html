@@ -39,50 +39,24 @@
 </body>
 
 <script>
-    var turn = 0;
+    var turn = -1;
+    var pieces = ["♙", "♟", "♘", "♞", "♔", "♚"];
 
     $(document).ready(function() {
         $('button').click(function() {
             var button = $(this);
 
             if (button.val().trim().length == 0) {
-                if (turn < 6) {
+                if (turn < 5) {
                     turn++;
-                    $.ajax({
-                        type: 'POST',
-                        url: 'placepiece.php',
-                        dataType: 'json',
-                        data: ({
-                            turn: turn
-                        }),
-                        success: function(result) {
-                            button.html(result);
-                            button.val(turn);
-                        },
-                        error: function() {
-                            console.log('errored out :(')
-                        }
-                    });
+                    button.html(pieces[turn]);
+                    button.val(turn);
                 } else {
                     turn++;
-                    $.ajax({
-                        type: 'POST',
-                        url: 'placepiece.php',
-                        dataType: 'json',
-                        data: ({
-                            turn: turn
-                        }),
-                        success: function(result) {
-                            button.html(result);
-                            console.log(turn - 6);
-                            $('button[value=' + (turn - 6) + ']').html('&nbsp;');
-                            $('button[value=' + (turn - 6) + ']').removeAttr('value');
-                            button.val(turn);
-                        },
-                        error: function() {
-                            console.log('errored out :(')
-                        }
-                    });
+                    button.html(pieces[turn % 6]);
+                    $('button[value=' + (turn - 6) + ']').html('&nbsp;');
+                    $('button[value=' + (turn - 6) + ']').removeAttr('value');
+                    button.val(turn);
                 }
             }
         });
