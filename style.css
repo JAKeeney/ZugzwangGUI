@@ -1,0 +1,81 @@
+.col {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    margin: 10px;
+    border-style: solid;
+    text-align: center;
+    font-size: 82px;
+}
+
+.row {
+    display: inline-block;
+}
+
+body {
+    text-align: center;
+}
+
+.letters {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    font-size: 79px;
+}
+
+.board {
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.tomove {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.currentmove {
+    display: inline-block;
+    float: left;
+    margin-top: 40px;
+    margin-left: 10px;
+    text-align: center;
+    font-size: 50px;
+}
+
+.piece {
+    display: inline-block;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 50px;
+    float: left;
+}
+
+@keyframes flashtwice {
+    0% {
+        background-color: black;
+    }
+    20% {
+        background-color: white;
+    }
+    40% {
+        background-color: black;
+    }
+    60% {
+        background-color: white;
+    }
+    80% {
+        background-color: black;
+    }
+    100% {
+        background-color: white;
+    }
+}
+
+.gameoverboard {
+    display: inline-block;
+    margin: 0 auto;
+    animation-name: flashtwice;
+    animation-duration: .5s;
+}
