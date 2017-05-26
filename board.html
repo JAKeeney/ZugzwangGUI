@@ -8,59 +8,112 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <div class="board"></div>
-    <div class="board">A</div>
-    <div class="board">B</div>
-    <div class="board">C</div>
-    <br><br><br><br><br><br><br>
-    <div>
-        <div class="board">A</div>
-        <div class="row">
-            <button type="button" id="AA" class="col" value="">&nbsp;</button>
-            <button type="button" id="AB" class="col" value="">&nbsp;</button>
-            <button type="button" id="AC" class="col" value="">&nbsp;</button>
+<body onload="nextpiece();">
+    <div class="board" id="board">
+        <div class="letters"></div>
+        <div class="letters">A</div>
+        <div class="letters">B</div>
+        <div class="letters">C</div>
+        <div>
+            <div class="letters">A</div>
+            <div class="row">
+                <button type="button" id="AA" class="col" value="">&nbsp;</button>
+                <button type="button" id="BA" class="col" value="">&nbsp;</button>
+                <button type="button" id="CA" class="col" value="">&nbsp;</button>
+            </div>
+            <br>
+            <div class="letters">B</div>
+            <div class="row">
+                <button type="button" id="AB" class="col" value="">&nbsp;</button>
+                <button type="button" id="BB" class="col" value="">&nbsp;</button>
+                <button type="button" id="CB" class="col" value="">&nbsp;</button>
+            </div>
+            <br>
+            <div class="letters">C</div>
+            <div class="row">
+                <button type="button" id="AC" class="col" value="">&nbsp;</button>
+                <button type="button" id="BC" class="col" value="">&nbsp;</button>
+                <button type="button" id="CC" class="col" value="">&nbsp;</button>
+            </div>
         </div>
-        <br>
-        <div class="board">B</div>
-        <div class="row">
-            <button type="button" id="BA" class="col" value="">&nbsp;</button>
-            <button type="button" id="BB" class="col" value="">&nbsp;</button>
-            <button type="button" id="BC" class="col" value="">&nbsp;</button>
-        </div>
-        <br>
-        <div class="board">C</div>
-        <div class="row">
-            <button type="button" id="CA" class="col" value="">&nbsp;</button>
-            <button type="button" id="CB" class="col" value="">&nbsp;</button>
-            <button type="button" id="CC" class="col" value="">&nbsp;</button>
-        </div>
+    </div>
+    <br>
+    <div class="tomove">
+        <div class="currentmove">Current move:</div>
+        <div class="piece" id="next"></div>
     </div>
 </body>
 
 <script>
-    var turn = -1;
+    var turn = 0;
     var pieces = ["♙", "♟", "♘", "♞", "♔", "♚"];
+    var winlines = [
+        ['AA', 'BA', 'CA'],
+        ['AB', 'BB', 'CB'],
+        ['AC', 'BC', 'CC'],
+        ['AA', 'AB', 'AC'],
+        ['BA', 'BB', 'BC'],
+        ['CA', 'CB', 'CC'],
+        ['AA', 'BB', 'CC'],
+        ['CA', 'BB', 'AC']
+    ];
+    var players = ['white', 'black'];
 
-    $(document).ready(function() {
-        $('button').click(function() {
-            var button = $(this);
 
-            if (button.val().trim().length == 0) {
-                if (turn < 5) {
-                    turn++;
-                    button.html(pieces[turn]);
-                    button.val(turn);
-                } else {
-                    turn++;
-                    button.html(pieces[turn % 6]);
-                    $('button[value=' + (turn - 6) + ']').html('&nbsp;');
-                    $('button[value=' + (turn - 6) + ']').removeAttr('value');
-                    button.val(turn);
-                }
+    $('button').click(function() {
+        var button = $(this);
+
+        if (button.val().trim().length == 0) {
+
+            var boardstate = $('.col').map(function() {
+                return this.value;
+            })
+
+            if (turn < 5) {
+                button.html(pieces[turn]);
+            } else {
+                button.html(pieces[turn % 6]);
+                $('button[value=' + (turn - 6) + ']').html('&nbsp;');
+                $('button[value=' + (turn - 6) + ']').removeAttr('value');
             }
-        });
+            button.val(turn);
+            winstate();
+            turn++;
+            nextpiece();
+        }
+
     });
+
+    function nextpiece() {
+        document.getElementById("next").innerHTML = '' +
+            pieces[(turn) % 6] + ' | ' +
+            pieces[(turn + 1) % 6] +
+            pieces[(turn + 2) % 6] +
+            pieces[(turn + 3) % 6] +
+            pieces[(turn + 4) % 6] +
+            pieces[(turn + 5) % 6];
+    }
+
+    function winstate() {
+        for (k = 0; k < winlines.length; k++) {
+
+            if ((document.getElementById(winlines[k][0]).value) &&
+                (document.getElementById(winlines[k][1]).value) &&
+                (document.getElementById(winlines[k][2]).value)) {
+
+                if ((document.getElementById(winlines[k][0]).value % 2 == document.getElementById(winlines[k][1]).value % 2) &&
+                    (document.getElementById(winlines[k][1]).value % 2 == document.getElementById(winlines[k][2]).value % 2)) {
+
+                    window.alert("Game over, " + players[document.getElementById(winlines[k][0]).value % 2] + " wins!");
+                    document.getElementById('board').className = 'gameoverboard';
+
+                }
+
+            }
+
+
+        }
+    }
 </script>
 
 </html>
