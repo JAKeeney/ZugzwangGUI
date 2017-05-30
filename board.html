@@ -44,7 +44,11 @@
     </div>
 </body>
 
+<script src="ai.js"></script>
 <script>
+    var game = true;
+    var ai = new AI();
+    var aiTurn = Math.random() >= 0.5;
     var turn = 0;
     var pieces = ["♙", "♟", "♘", "♞", "♔", "♚"];
     var winlines = [
@@ -58,7 +62,6 @@
         ['CA', 'BB', 'AC']
     ];
     var players = ['white', 'black'];
-
 
     $('button').click(function() {
         var button = $(this);
@@ -80,8 +83,11 @@
             winstate();
             turn++;
             nextpiece();
+            if(!aiTurn && game){
+                aiTurn = true;
+	        ai.aiMove();
+	    }
         }
-
     });
 
     function nextpiece() {
@@ -103,7 +109,7 @@
 
                 if ((document.getElementById(winlines[k][0]).value % 2 == document.getElementById(winlines[k][1]).value % 2) &&
                     (document.getElementById(winlines[k][1]).value % 2 == document.getElementById(winlines[k][2]).value % 2)) {
-
+                    game = false;
                     window.alert("Game over, " + players[document.getElementById(winlines[k][0]).value % 2] + " wins!");
                     document.getElementById('board').className = 'gameoverboard';
 
@@ -114,6 +120,12 @@
 
         }
     }
+
+    $(document).ready(function(){
+        if(aiTurn)
+            ai.aiMove();
+    });
+    
 </script>
 
 </html>
